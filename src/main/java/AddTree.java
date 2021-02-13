@@ -1,8 +1,7 @@
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+
 
 public class AddTree {
     public static void newTree(Path directory, Collection<Path> all) throws IOException {

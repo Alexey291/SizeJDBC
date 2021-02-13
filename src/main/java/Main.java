@@ -21,15 +21,6 @@ public class Main {
         String query = scanner1.nextLine();
         Result.getResult(query);}
 
-       // long size;
-        //size = all.stream().mapToLong(p -> p.toFile().length()).sum();
-        //System.out.println(size);
-       // all.forEach(System.out::println);
-
-                //long KB = (long) (size/1024);
-               // int MB = (int) (size/1048576);
-                //int GB = (int) (size/1073741824);
-
     }
 
 }

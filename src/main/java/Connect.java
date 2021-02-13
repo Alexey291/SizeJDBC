@@ -21,7 +21,6 @@ public class Connect {
         {
             try {
                 List<String> stringList = putFile(all);
-                //System.out.println(stringList.get(1).toString());
                 connection = DriverManager.getConnection(dbName,dbUser,dbPass);
                 connection.createStatement().execute("DROP TABLE IF EXISTS file_information");
                 connection.createStatement().execute("CREATE TABLE file_information(" +
@@ -30,13 +29,24 @@ public class Connect {
                         "size BIGINT UNSIGNED, " +
                         "time_modify DATE, " +
                         "extension TINYTEXT, " +
+                        "hidden TINYINT(1), " +
                         "PRIMARY KEY(id))");
 
                 for (String string : stringList){
                     connection.createStatement().execute(string);
-                    //System.out.println(string);
                 }
-                System.out.println("Сканирование завершено за: " + (System.currentTimeMillis() - time)/1000);
+                System.out.println("Сканирование завершено за: " + (System.currentTimeMillis() - time)/1000 + " секунд");
+                System.out.println("Доступные команды: " + "\n" +
+                        "   max size" + "\n" +
+                        "   min size" + "\n" +
+                        "   sum size" + "\n" +
+                        "   old date" + "\n" +
+                        "   new date" + "\n" +
+                        "   extension" + "\n" +
+                        "   extension 10%" + "\n" +
+                        "   not access 10%" + "\n" +
+                        "   open file 10%" + "\n" +
+                        "   size 10%" + "\n");
                 System.out.println("Введите команду: ");
 
             } catch (SQLException | ParseException e) {
@@ -56,7 +66,7 @@ public class Connect {
         for (Path path : all){
             long size = path.toFile().length();
             String name = path.getFileName().toString();
-            //String extension;
+            boolean hidden = path.toFile().isHidden();
             if (name.contains(".")){
                 extension = name.substring(name.lastIndexOf("."));}
             else {
@@ -74,8 +84,10 @@ public class Connect {
                     .append("'").append(",")
                     .append("'")
                     .append(extension)
-                    .append("'");
-            builder.append("INSERT INTO file_information (name, size, time_modify, extension) VALUE")
+                    .append("'")
+                    .append(",")
+                    .append(hidden);
+            builder.append("INSERT INTO file_information (name, size, time_modify, extension, hidden) VALUE")
                     .append("(")
                     .append(insertQuery)
                     .append(")");
